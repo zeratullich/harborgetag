@@ -65,6 +65,6 @@ node('jenkins-application-publish'){
 其中jenkins-application-publish需要在Jenkins中使用kubernetes插件设置Cloud中定义。
 ![](doc/image/screen04.jpg)
 
-**注意:** Jenkins如果可以安装[image-tag-parameter-plugin](https://github.com/jenkinsci/image-tag-parameter-plugin)插件（需要Jenkins版本比较高），最好使用此插件，因为出现错误时候可以参照Jenkins日志查看错误原因，使用[Active Choices Plug-in](https://plugins.jenkins.io/uno-choice/)插件无法给出错误日志，排查比较困难，且在定义参数时候，密码参数默认值无法传递给此插件，需要在参数化构建时候重新输入比较麻烦，此项目可以用在其他需要获取Harbor仓库镜像版本号上。
+**注意:** Jenkins如果可以安装[image-tag-parameter-plugin](https://github.com/jenkinsci/image-tag-parameter-plugin)插件（需要Jenkins版本比较高），最好使用此插件，因为出现错误时候可以参照Jenkins日志查看错误原因，使用[Active Choices Plug-in](https://plugins.jenkins.io/uno-choice/)插件无法给出错误日志，故排查问题比较困难。且在定义参数时候，密码参数默认值无法传递给此插件，需要在参数化构建时候每次都要重新输入密码（但可以设置密码的默认值，比较不安全，不推荐）比较麻烦，此工程可以用在其他需要获取Harbor仓库镜像版本号的应用上，例如使用脚本获取镜像版本号来作为持续发布（CD）的方案上。
 ### 手动执行获取tag示例
 ![](doc/image/screen05.jpg)

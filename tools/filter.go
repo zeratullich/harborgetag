@@ -7,7 +7,7 @@ func Filter(filter string, slice []string) []string {
 		return slice
 	}
 
-	var s []string
+	s := slice[:0]
 	r := regexp.MustCompile(filter)
 	for _, v := range slice {
 		if r.MatchString(v) {
