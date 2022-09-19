@@ -139,11 +139,11 @@ func (i *ImageTag) GetImageTagsFromRegistry() error {
 	i.Tags = tools.Filter(i.Filter, i.Tags)
 	switch i.Order {
 	case "Reverse-Natural-Ordering":
-		func(s *[]string) {
-			for i, j := 0, len(*s)-1; i < j; i, j = i+1, j-1 {
-				(*s)[i], (*s)[j] = (*s)[j], (*s)[i]
+		func(s []string) {
+			for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+				s[i], s[j] = s[j], s[i]
 			}
-		}(&(i.Tags))
+		}(i.Tags)
 	case "Descending-Versions":
 		sort.Sort(tools.OrderStringsSlice(i.Tags))
 	case "Ascending-Versions":

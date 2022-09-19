@@ -6,7 +6,6 @@ import (
 	"harborgetag/imagetag"
 	"harborgetag/tools"
 	"log"
-	"os"
 )
 
 var username = flag.String("username", "admin", "Harbor auth user name")
@@ -38,11 +37,11 @@ func main() {
 
 	err := imageTag.GetImageTagsFromRegistry()
 	if err != nil {
-		log.Println("get image tag failed:", err)
-		os.Exit(2)
-	}
-	log.Println("get image tags is:", imageTag.Tags)
-	for _, v := range imageTag.Tags {
-		fmt.Printf("%s:%s\n", *image, v)
+		fmt.Printf("get image tag failed: %v", err)
+	} else {
+		log.Println("get image tags is:", imageTag.Tags)
+		for _, v := range imageTag.Tags {
+			fmt.Printf("%s:%s\n", *image, v)
+		}
 	}
 }
