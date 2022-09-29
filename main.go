@@ -40,8 +40,8 @@ func main() {
 		fmt.Printf("get image tag failed: %v", err)
 	} else {
 		log.Println("get image tags is:", imageTag.Tags)
-		for _, v := range imageTag.Tags {
-			fmt.Printf("%s:%s\n", *image, v)
+		for k := range imageTag.Tags {
+			fmt.Printf("%s:%s\n", *image, imageTag.Tags[k])
 		}
 	}
 }

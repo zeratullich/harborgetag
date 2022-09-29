@@ -56,11 +56,13 @@ func (i *ImageTag) getToken() error {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		log.Println("get token failed:", err)
 		return err
 	}
 	json.Unmarshal(body, &(i.token))
 	if i.token.Token == "" {
-		log.Println("get token failed !")
+		log.Println("get token failed:", string(body))
+		return fmt.Errorf("%v", string(body))
 	}
 	return nil
 }
