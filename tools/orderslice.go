@@ -11,9 +11,8 @@ func (s OrderStringsSlice) Swap(i, j int) {
 }
 
 func (s OrderStringsSlice) Less(i, j int) bool {
-	if len(s[i]) == len(s[j]) {
-		return s[i] > s[j]
-	} else {
+	if len(s[i]) != len(s[j]) {
 		return len(s[i]) > len(s[j])
 	}
+	return s[i] > s[j]
 }

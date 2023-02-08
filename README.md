@@ -37,7 +37,7 @@ Usage of /opt/harborgetag:
         Whether ssl authentication is enabled in harbor (default true)
 ```
 ## 与Jenkins插件结合
-> 需要首先把编译好的二进制文件放入与Jenkins统一个主机中(vm或者容器)，假如文件在linux系统编译好，放入的是alpine容器中运行，则需要解决liblic问题（`mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2`）。
+> 需要首先把编译好的二进制文件放入与Jenkins统一个主机中(vm或者容器)，假如文件在linux系统编译好，放入的是alpine容器中运行，则需要解决libc问题（`mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2`）。
 1. Jenkins中需要安装[Active Choices Plug-in](https://plugins.jenkins.io/uno-choice/)插件。
 ![](doc/image/plugin.jpg)
 2. 结合参数使用。

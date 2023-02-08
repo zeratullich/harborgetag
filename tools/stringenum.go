@@ -14,9 +14,8 @@ func (s *stringEnum) Set(v string) error {
 	case "http", "https":
 		s.value = v
 		return nil
-	default:
-		return fmt.Errorf("must be one of %s", "[http,https]")
 	}
+	return fmt.Errorf("must be one of %s", "[http,https]")
 }
 
 func (s *stringEnum) String() string {
@@ -26,5 +25,5 @@ func (s *stringEnum) String() string {
 func StringEnumVar(name string, value string, usage string) *string {
 	s := stringEnum{value: value}
 	flag.CommandLine.Var(&s, name, usage)
-	return &(s.value)
+	return &s.value
 }
