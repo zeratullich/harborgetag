@@ -153,3 +153,16 @@ func (i *ImageTag) GetImageTagsFromRegistry() error {
 	}
 	return nil
 }
+
+// NewGetImageTag is the constructor that fills the ImageTag struct with default values .
+func NewGetImageTag(username, password, register, image, order, filter string, verifySSL bool) *ImageTag {
+	return &ImageTag{
+		Username:  username,
+		Password:  password,
+		Registry:  register,
+		Image:     image,
+		Order:     order,
+		Filter:    filter,
+		VerifySSL: verifySSL,
+	}
+}

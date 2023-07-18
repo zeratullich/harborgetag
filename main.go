@@ -26,7 +26,7 @@ var scheme = tools.StringEnumVar("scheme", "https", "URL request prefix, only on
 func main() {
 	flag.Parse()
 
-	imageTag := imagetag.ImageTag{Username: *username, Password: *password, Registry: *registry, Image: *image, VerifySSL: *verifySSL, Order: *order, Filter: *filter}
+	imageTag := imagetag.NewGetImageTag(*username, *password, *registry, *image, *order, *filter, *verifySSL)
 
 	if *scheme == "http" {
 		imageTag.VerifySSL = false
