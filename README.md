@@ -7,7 +7,7 @@
 1. 克隆代码&安装
 ```
 $ git clone https://github.com/zeratullich/harborgetag
-$ cd harborgetag && go build && mv harborgetag /opt
+$ cd harborgetag && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build && mv harborgetag /opt
 ```
 2. 使用
 ```
@@ -37,18 +37,18 @@ Usage of /opt/harborgetag:
         Whether ssl authentication is enabled in harbor (default true)
 ```
 ## 与Jenkins插件结合
-> 需要首先把编译好的二进制文件放入与Jenkins统一个主机中(vm或者容器)，假如文件在linux系统编译好，放入的是alpine容器中运行，则需要解决libc问题（`mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2`）。
+> 需要首先把编译好的二进制文件放入与Jenkins统一个主机中(vm或者容器)。
 1. Jenkins中需要安装[Active Choices Plug-in](https://plugins.jenkins.io/uno-choice/)插件。
 ![](doc/image/plugin.jpg)
-2. 结合参数使用。
+1. 结合参数使用。
 ![](doc/image/screen1.jpg)
 ...
-3. 需要在最后再应用`Active Choices Plug-in`插件，并需要使用其`Referenced parameters`引入上述自定义的参数。
+1. 需要在最后再应用`Active Choices Plug-in`插件，并需要使用其`Referenced parameters`引入上述自定义的参数。
 ![](doc/image/screen01.jpg)
 ![](doc/image/screen02.jpg)
-4. 点击参数化构建，填入密码，即将可以获取harbor的镜像版本号。
+1. 点击参数化构建，填入密码，即将可以获取harbor的镜像版本号。
 ![](doc/image/screen03.jpg)
-5. 使用Pipeline流水线工作完成CD（持续发布过程）。
+1. 使用Pipeline流水线工作完成CD（持续发布过程）。
 示例代码：
 ```
 node('jenkins-application-publish'){
