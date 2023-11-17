@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"harborgetag/tools"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"regexp"
@@ -31,10 +31,11 @@ func (i *ImageTag) getToken() error {
 	if err != nil {
 		return fmt.Errorf("get auth service error: %v", err)
 	}
+
 	realm, service := i.authService[1], i.authService[2]
 	url := realm + "?" + "service=" + service + "&scope=" + "repository:" + i.Image + ":pull"
 
-	log.Printf("get token url is: %s\n", url)
+	log.Printf("get token url is: %s", url)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return err
@@ -47,6 +48,7 @@ func (i *ImageTag) getToken() error {
 			},
 		},
 	}
+
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Println("get token failed:", err)
@@ -54,7 +56,7 @@ func (i *ImageTag) getToken() error {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Println("get token failed:", err)
 		return err
@@ -74,12 +76,13 @@ func (i *ImageTag) getAuthService() error {
 	rtn[1] = "" // realm
 	rtn[2] = "" // service
 
-	log.Printf("get auth service url is: %s\n", url)
+	log.Printf("get auth service url is: %s", url)
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
+
 	headerValue := resp.Header.Get("Www-Authenticate")
 	typePattern, _ := regexp.Compile(`^(\S+)`)
 	typeMatcher := ""
@@ -96,13 +99,15 @@ func (i *ImageTag) getAuthService() error {
 			rtn[2] = matchFind[2]
 			log.Println("authService: type=Bearer, realm=" + rtn[1] + ", service=" + rtn[2])
 		} else {
-			log.Println("no authService available from ", url)
+			return fmt.Errorf("no authService available from %s", url)
 		}
 	}
+
 	i.authService = rtn
 	return nil
 }
 
+// GetImageTagsFromRegistry can obtain image tags from certified harbor servers
 func (i *ImageTag) GetImageTagsFromRegistry() error {
 	err := i.getToken()
 	if err != nil {
@@ -115,6 +120,7 @@ func (i *ImageTag) GetImageTagsFromRegistry() error {
 	if err != nil {
 		return err
 	}
+
 	req.Header.Set("Authorization", "Bearer"+" "+i.token.Token)
 	client := &http.Client{
 		Transport: &http.Transport{
@@ -123,21 +129,23 @@ func (i *ImageTag) GetImageTagsFromRegistry() error {
 			},
 		},
 	}
+
 	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
-
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
+
 	json.Unmarshal(body, i)
 	if len(i.Tags) == 0 {
 		return fmt.Errorf(string(body))
 	}
+
 	i.Tags = tools.Filter(i.Filter, i.Tags)
 	switch i.Order {
 	case "Reverse-Natural-Ordering":

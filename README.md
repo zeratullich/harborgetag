@@ -19,7 +19,6 @@ Usage of /opt/harborgetag:
         Harbor registered mirror image (default "qy/book-store")
   -order string
         Allows the user to alter the ordering of the ImageTags in the build parameter.
-    
                 Natural-Ordering ... same Ordering as the tags had in prior versions
                 Reverse-Natural-Ordering ... the reversed original ordering
                 Descending-Versions ... attempts to pars the tags to a version and order them descending

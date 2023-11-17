@@ -6,6 +6,7 @@ import (
 	"harborgetag/imagetag"
 	"harborgetag/tools"
 	"log"
+	"os"
 )
 
 var username = flag.String("username", "admin", "Harbor auth user name")
@@ -13,7 +14,6 @@ var password = flag.String("password", "123456", "Harbor auth user password")
 var registry = flag.String("registry", "harbor.myquanyi.com", "Harbor registered mirror address")
 var image = flag.String("image", "qy/book-store", "Harbor registered mirror image")
 var order = flag.String("order", "Descending-Versions", `Allows the user to alter the ordering of the ImageTags in the build parameter.
-
 	Natural-Ordering ... same Ordering as the tags had in prior versions
 	Reverse-Natural-Ordering ... the reversed original ordering
 	Descending-Versions ... attempts to pars the tags to a version and order them descending
@@ -38,10 +38,12 @@ func main() {
 	err := imageTag.GetImageTagsFromRegistry()
 	if err != nil {
 		fmt.Printf("get image tag failed: %v", err)
+		os.Exit(1)
 	} else {
 		log.Println("get image tags is:", imageTag.Tags)
 		for k := range imageTag.Tags {
 			fmt.Printf("%s:%s\n", *image, imageTag.Tags[k])
 		}
+		os.Exit(0)
 	}
 }
